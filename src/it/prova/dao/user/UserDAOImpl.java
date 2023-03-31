@@ -327,20 +327,53 @@ public class UserDAOImpl extends AbstractMySQLDAO implements UserDAO {
 
 	@Override
 	public List<User> findByExample(User input) throws Exception {
-		// TODO Auto-generated method stub
-		return new ArrayList<>();
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+		if (input == null) {
+			throw new Exception("Utente nullo");
+		}
+		List<User> result = new ArrayList<User>();
+		String query = " select * from user where id is not null ";
+		
+		
+		if (input.getCognome() != null) {
+			query += " and cognome like '" + input.getCognome() + "%' ";
+		}
+		if (input.getNome() != null) {
+			query += " and nome like '" + input.getNome() + "%' ";
+		}
+		if (input.getLogin() != null) {
+			query += " and login like '" + input.getLogin() + "%' ";
+		}
+		if (input.getPassword() != null) {
+			query += " and login like '" + input.getPassword() + "%' ";
+		}
+		if (input.getDateCreated() != null) {
+			query += " and login like '" + input.getDateCreated() + "%' ";
+		}
+		
+		
+		
+			try (Statement ps = connection.createStatement(); ResultSet rs = ps.executeQuery(query)) {
+
+				while (rs.next()) {
+					User userTemp = new User();
+					userTemp.setNome(rs.getString("NOME"));
+					userTemp.setCognome(rs.getString("COGNOME"));
+					userTemp.setLogin(rs.getString("LOGIN"));
+					userTemp.setPassword(rs.getString("PASSWORD"));
+					userTemp.setDateCreated(
+							rs.getDate("DATECREATED") != null ? rs.getDate("DATECREATED").toLocalDate() : null);
+					userTemp.setId(rs.getLong("ID"));
+					result.add(userTemp);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			}
+		return result;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	// ############################################################
 	// ############ SOLUZIONE FINDBYEXAMPLE #######################

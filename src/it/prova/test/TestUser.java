@@ -46,9 +46,12 @@ public class TestUser {
 //			testFindByLoginAndPassword(userDAOInstance);
 //			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
 			
-			testFindAllByPasswordIsNull(userDAOInstance);
-			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
+//			testFindAllByPasswordIsNull(userDAOInstance);
+//			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
 			
+			testFindByExample(userDAOInstance);
+			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
+
 			
 			// ESERCIZIO SUCCESSIVO: implementare metodi mancanti nel DAO
 
@@ -147,6 +150,7 @@ public class TestUser {
 		if (listaUserConCognome.size()<1) {
 			throw new RuntimeException("testFindAllByCognome : FAILED, non ci sono voci sul DB");
 		}
+		System.out.println("Gli elementi della lista sono: "+listaUserConCognome.size());
 		System.out.println(listaUserConCognome);
 		System.out.println(".......testFindAllByCognome fine: PASSED.............");
 		
@@ -158,11 +162,13 @@ public class TestUser {
 		if (elencoVociPresenti.size() < 1)
 			throw new RuntimeException("testFindAllByLoginIniziaCon : FAILED, non ci sono voci sul DB");
 		String caratteriInizialeLogin = "p";
-		List<User> listaUserConCognome = userDAOInstance.findAllByLoginIniziaCon(caratteriInizialeLogin);
-		if (listaUserConCognome.size()<1) {
+		List<User> listaUserFindAllByLoginIniziaCon = userDAOInstance.findAllByLoginIniziaCon(caratteriInizialeLogin);
+		if (listaUserFindAllByLoginIniziaCon.size()<1) {
 			throw new RuntimeException("testFindAllByLoginIniziaCon : FAILED, non ci sono voci sul DB");
 		}
-		System.out.println(listaUserConCognome);
+		System.out.println("Gli elementi della lista sono: "+listaUserFindAllByLoginIniziaCon.size());
+		System.out.println(listaUserFindAllByLoginIniziaCon);
+		
 		System.out.println(".......testFindAllByLoginIniziaCon fine: PASSED.............");
 	}
 	
@@ -192,6 +198,23 @@ public class TestUser {
 			throw new RuntimeException("testFindAllByLoginIniziaCon : FAILED, non ci sono voci sul DB");
 		}
 		System.out.println(listaUsersSenzaPassword);
+		System.out.println("Gli elementi della lista sono: "+listaUsersSenzaPassword.size());
+		System.out.println(".......testFindAllByPasswordIsNull fine: PASSED.............");
+	}
+	private static void  testFindByExample (UserDAO userDAOInstance) throws Exception{
+		System.out.println(".......testFindAllByPasswordIsNull inizio.............");
+		List<User> elencoVociPresenti = userDAOInstance.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testFindAllByPasswordIsNull : FAILED, non ci sono voci sul DB");
+		User userExample = new User("mario","rossi"
+				);
+		List<User> listaUsersLikeExample = userDAOInstance.findByExample(userExample);
+		
+		if (listaUsersLikeExample.size()<1) {
+			throw new RuntimeException("testFindAllByLoginIniziaCon : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println("Gli elementi della lista sono: "+listaUsersLikeExample.size());
+		System.out.println(listaUsersLikeExample);
 		System.out.println(".......testFindAllByPasswordIsNull fine: PASSED.............");
 	}
 }
