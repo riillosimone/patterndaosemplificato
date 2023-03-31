@@ -36,7 +36,12 @@ public class TestUser {
 //
 //			testFindAllWhereDateCreatedGreaterThan(userDAOInstance);
 //			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
-			testFindAllByCognome(userDAOInstance);
+//			
+//			testFindAllByCognome(userDAOInstance);
+//			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
+			
+			testFindAllByLoginIniziaCon(userDAOInstance);
+			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
 			
 			
 			// ESERCIZIO SUCCESSIVO: implementare metodi mancanti nel DAO
@@ -130,15 +135,31 @@ public class TestUser {
 		System.out.println(".......testFindAllByCognome inizio.............");
 		List<User> elencoVociPresenti = userDAOInstance.list();
 		if (elencoVociPresenti.size() < 1)
-			throw new RuntimeException("testFindById : FAILED, non ci sono voci sul DB");
+			throw new RuntimeException("testFindAllByCognome : FAILED, non ci sono voci sul DB");
 		String cognomeDaCercare = "Rossi";
 		List<User> listaUserConCognome = userDAOInstance.findAllByCognome(cognomeDaCercare);
 		if (listaUserConCognome.size()<1) {
-			throw new RuntimeException("testFindById : FAILED, non ci sono voci sul DB");
+			throw new RuntimeException("testFindAllByCognome : FAILED, non ci sono voci sul DB");
 		}
 		System.out.println(listaUserConCognome);
-		
+		System.out.println(".......testFindAllByCognome fine: PASSED.............");
 		
 	}
+	
+	private static void testFindAllByLoginIniziaCon (UserDAO userDAOInstance) throws Exception{
+		System.out.println(".......testFindAllByLoginIniziaCon inizio.............");
+		List<User> elencoVociPresenti = userDAOInstance.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testFindById : FAILED, non ci sono voci sul DB");
+		String caratteriInizialeLogin = "p";
+		List<User> listaUserConCognome = userDAOInstance.findAllByLoginIniziaCon(caratteriInizialeLogin);
+		if (listaUserConCognome.size()<1) {
+			throw new RuntimeException("testFindAllByLoginIniziaCon : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println(listaUserConCognome);
+		System.out.println(".......testFindAllByLoginIniziaCon fine: PASSED.............");
+	}
+	
+	
 
 }
