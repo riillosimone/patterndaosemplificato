@@ -24,19 +24,21 @@ public class TestUser {
 			// ecco chi 'inietta' la connection: il chiamante
 			userDAOInstance = new UserDAOImpl(connection);
 
-			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
-
-			testInsertUser(userDAOInstance);
-			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
-
-			testFindById(userDAOInstance);
-
-			testDeleteUser(userDAOInstance);
-			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
-
-			testFindAllWhereDateCreatedGreaterThan(userDAOInstance);
-			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
-
+//			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
+//
+//			testInsertUser(userDAOInstance);
+//			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
+//
+//			testFindById(userDAOInstance);
+//
+//			testDeleteUser(userDAOInstance);
+//			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
+//
+//			testFindAllWhereDateCreatedGreaterThan(userDAOInstance);
+//			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
+			testFindAllByCognome(userDAOInstance);
+			
+			
 			// ESERCIZIO SUCCESSIVO: implementare metodi mancanti nel DAO
 
 		} catch (Exception e) {
@@ -124,8 +126,17 @@ public class TestUser {
 
 		System.out.println(".......testFindAllWhereDateCreatedGreaterThan fine: PASSED.............");
 	}
-	private static void testFindAllByCognome (UserDAO userDAOInstance) {
+	private static void testFindAllByCognome (UserDAO userDAOInstance) throws Exception{
 		System.out.println(".......testFindAllByCognome inizio.............");
+		List<User> elencoVociPresenti = userDAOInstance.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testFindById : FAILED, non ci sono voci sul DB");
+		String cognomeDaCercare = "Rossi";
+		List<User> listaUserConCognome = userDAOInstance.findAllByCognome(cognomeDaCercare);
+		if (listaUserConCognome.size()<1) {
+			throw new RuntimeException("testFindById : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println(listaUserConCognome);
 		
 		
 	}
