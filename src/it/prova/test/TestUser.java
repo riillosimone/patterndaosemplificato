@@ -40,7 +40,10 @@ public class TestUser {
 //			testFindAllByCognome(userDAOInstance);
 //			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
 			
-			testFindAllByLoginIniziaCon(userDAOInstance);
+//			testFindAllByLoginIniziaCon(userDAOInstance);
+//			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
+			
+			testFindByLoginAndPassword(userDAOInstance);
 			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
 			
 			
@@ -150,7 +153,7 @@ public class TestUser {
 		System.out.println(".......testFindAllByLoginIniziaCon inizio.............");
 		List<User> elencoVociPresenti = userDAOInstance.list();
 		if (elencoVociPresenti.size() < 1)
-			throw new RuntimeException("testFindById : FAILED, non ci sono voci sul DB");
+			throw new RuntimeException("testFindAllByLoginIniziaCon : FAILED, non ci sono voci sul DB");
 		String caratteriInizialeLogin = "p";
 		List<User> listaUserConCognome = userDAOInstance.findAllByLoginIniziaCon(caratteriInizialeLogin);
 		if (listaUserConCognome.size()<1) {
@@ -160,6 +163,19 @@ public class TestUser {
 		System.out.println(".......testFindAllByLoginIniziaCon fine: PASSED.............");
 	}
 	
-	
+	private static void testFindByLoginAndPassword (UserDAO userDAOInstance) throws Exception{
+		System.out.println(".......testFindByLoginAndPassword inizio.............");
+		List<User> elencoVociPresenti = userDAOInstance.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testFindByLoginAndPassword : FAILED, non ci sono voci sul DB");
+		String loginDaCercare = "m.rossi@example.com";
+		String passwordDaCercare = "password@01";
+		User UserDaCercare = userDAOInstance.findByLoginAndPassword(loginDaCercare,passwordDaCercare);
+		if (UserDaCercare ==null) {
+			throw new RuntimeException("testFindByLoginAndPassword : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println(UserDaCercare);
+		System.out.println(".......testFindByLoginAndPassword fine: PASSED.............");
+	}
 
 }
