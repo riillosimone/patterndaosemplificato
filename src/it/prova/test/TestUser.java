@@ -43,7 +43,10 @@ public class TestUser {
 //			testFindAllByLoginIniziaCon(userDAOInstance);
 //			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
 			
-			testFindByLoginAndPassword(userDAOInstance);
+//			testFindByLoginAndPassword(userDAOInstance);
+//			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
+			
+			testFindAllByPasswordIsNull(userDAOInstance);
 			System.out.println("In tabella user ci sono " + userDAOInstance.list().size() + " elementi.");
 			
 			
@@ -178,4 +181,17 @@ public class TestUser {
 		System.out.println(".......testFindByLoginAndPassword fine: PASSED.............");
 	}
 
+	private static void testFindAllByPasswordIsNull (UserDAO userDAOInstance) throws Exception{
+		System.out.println(".......testFindAllByPasswordIsNull inizio.............");
+		List<User> elencoVociPresenti = userDAOInstance.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testFindAllByPasswordIsNull : FAILED, non ci sono voci sul DB");
+		
+		List<User> listaUsersSenzaPassword = userDAOInstance.findAllByPasswordIsNull();
+		if (listaUsersSenzaPassword.size()<1) {
+			throw new RuntimeException("testFindAllByLoginIniziaCon : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println(listaUsersSenzaPassword);
+		System.out.println(".......testFindAllByPasswordIsNull fine: PASSED.............");
+	}
 }
