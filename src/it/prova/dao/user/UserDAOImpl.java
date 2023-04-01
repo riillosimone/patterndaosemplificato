@@ -334,44 +334,41 @@ public class UserDAOImpl extends AbstractMySQLDAO implements UserDAO {
 		}
 		List<User> result = new ArrayList<User>();
 		String query = " select * from user where id is not null ";
-		
-		
-		if (input.getCognome() != null) {
+
+		if (input.getCognome() != null && !input.getCognome().isEmpty()) {
 			query += " and cognome like '" + input.getCognome() + "%' ";
 		}
-		if (input.getNome() != null) {
+		if (input.getNome() != null && !input.getNome().isEmpty()) {
 			query += " and nome like '" + input.getNome() + "%' ";
 		}
-		if (input.getLogin() != null) {
+		if (input.getLogin() != null && !input.getLogin().isEmpty()) {
 			query += " and login like '" + input.getLogin() + "%' ";
 		}
-		if (input.getPassword() != null) {
-			query += " and login like '" + input.getPassword() + "%' ";
+		if (input.getPassword() != null && !input.getPassword().isEmpty()) {
+			query += " and password like '" + input.getPassword() + "%' ";
 		}
 		if (input.getDateCreated() != null) {
-			query += " and login like '" + input.getDateCreated() + "%' ";
+			query += " and DATECREATED= '" + java.sql.Date.valueOf(input.getDateCreated()) + "' ";
 		}
-		
-		
-		
-			try (Statement ps = connection.createStatement(); ResultSet rs = ps.executeQuery(query)) {
 
-				while (rs.next()) {
-					User userTemp = new User();
-					userTemp.setNome(rs.getString("NOME"));
-					userTemp.setCognome(rs.getString("COGNOME"));
-					userTemp.setLogin(rs.getString("LOGIN"));
-					userTemp.setPassword(rs.getString("PASSWORD"));
-					userTemp.setDateCreated(
-							rs.getDate("DATECREATED") != null ? rs.getDate("DATECREATED").toLocalDate() : null);
-					userTemp.setId(rs.getLong("ID"));
-					result.add(userTemp);
-				}
+		try (Statement ps = connection.createStatement(); ResultSet rs = ps.executeQuery(query)) {
 
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw e;
+			while (rs.next()) {
+				User userTemp = new User();
+				userTemp.setNome(rs.getString("NOME"));
+				userTemp.setCognome(rs.getString("COGNOME"));
+				userTemp.setLogin(rs.getString("LOGIN"));
+				userTemp.setPassword(rs.getString("PASSWORD"));
+				userTemp.setDateCreated(
+						rs.getDate("DATECREATED") != null ? rs.getDate("DATECREATED").toLocalDate() : null);
+				userTemp.setId(rs.getLong("ID"));
+				result.add(userTemp);
 			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 		return result;
 	}
 
